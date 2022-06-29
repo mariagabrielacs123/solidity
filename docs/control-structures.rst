@@ -145,6 +145,15 @@ throws an exception or goes out of gas.
     external functions happen after any changes to state variables in your contract
     so your contract is not vulnerable to a reentrancy exploit.
 
+.. warning::
+    As stated previously, for an external call, all arguments have to be copied to memory.
+    As a consequence of that, if an external function has ``calldata`` parameters,
+    they will be internally converted by the compiler to ``memory`` parameters.
+    In practice, there is no actual difference between these two data locations for arguments of an external call.
+    Thus, external function pointers cannot be assigned, passed as arguments or used in ``abi.encodeCall( )``.
+    Attempts of these operations will result in type related errors.
+    Hence, in such cases, it is recommended to use external functions with ``memory`` parameters to circumvent the issue.
+
 .. note::
     Before Solidity 0.6.2, the recommended way to specify the value and gas was to
     use ``f.value(x).gas(g)()``. This was deprecated in Solidity 0.6.2 and is no
