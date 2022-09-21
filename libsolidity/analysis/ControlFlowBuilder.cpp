@@ -80,6 +80,7 @@ bool ControlFlowBuilder::visit(BinaryOperation const& _operation)
 				_operation.leftExpression().accept(*this);
 				_operation.rightExpression().accept(*this);
 
+				solAssert(*_operation.annotation().userDefinedFunction);
 				m_currentNode->functionDefinition = *_operation.annotation().userDefinedFunction;
 
 				auto nextNode = newLabel();
@@ -101,13 +102,15 @@ bool ControlFlowBuilder::visit(UnaryOperation const& _operation)
 	visitNode(_operation);
 	if (_operation.annotation().userDefinedFunction.set())
 	{
+		_operation.subExpression().accept(*this);
+		solAssert(*_operation.annotation().userDefinedFunction);
 		m_currentNode->functionDefinition = *_operation.annotation().userDefinedFunction;
 
 		auto nextNode = newLabel();
 
 		connect(m_currentNode, nextNode);
 		m_currentNode = nextNode;
-		return true;
+		return false;
 	}
 
 	return ASTConstVisitor::visit(_operation);
