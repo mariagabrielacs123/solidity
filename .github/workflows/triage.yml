@@ -2,7 +2,8 @@ name: Add new issues to triage column
 
 on:
   issues:
-    types: [ opened ]
+    types:
+      - opened
 
 env:
   GITHUB_TOKEN: ${{ secrets.PROJECT_BOARD_AUTOMATION }}
