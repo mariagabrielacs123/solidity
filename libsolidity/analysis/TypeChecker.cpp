@@ -1734,7 +1734,7 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 	Result<FunctionDefinition const*> userDefinedOperatorResult = subExprType->userDefinedOperator(
 		_operation.getOperator(),
 		*currentDefinitionScope(),
-		true
+		true // _unaryOperation
 	);
 	if (userDefinedOperatorResult)
 		_operation.annotation().userDefinedFunction = userDefinedOperatorResult;
@@ -1758,7 +1758,7 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 	else
 	{
 		string description =
-			"Built-in unary operator " + string(TokenTraits::toString(op)) + " cannot be applied to type " + subExprType->humanReadableName() + "." +
+			"Built-in unary operator "s + TokenTraits::toString(op) + " cannot be applied to type " + subExprType->humanReadableName() + "." +
 			(!builtinResult.message().empty() ? " " + builtinResult.message() : "") +
 			(!userDefinedOperatorResult.message().empty() ? " " + userDefinedOperatorResult.message() : "");
 		if (modifying)
@@ -1791,7 +1791,7 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 	Result<FunctionDefinition const*> userDefinedOperatorResult = leftType->userDefinedOperator(
 		_operation.getOperator(),
 		*currentDefinitionScope(),
-		false
+		false // _unaryOperation
 	);
 	if (userDefinedOperatorResult)
 		_operation.annotation().userDefinedFunction = userDefinedOperatorResult;
@@ -3926,7 +3926,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				m_errorReporter.typeError(
 					5332_error,
 					path->location(),
-					"Operators can only be implemented for user-defined types and not for contracts."
+					"Operators can only be implemented for user-defined value types and structs."
 				);
 				continue;
 			}

@@ -325,7 +325,7 @@ ViewPureChecker::MutabilityAndLocation const& ViewPureChecker::modifierMutabilit
 
 void ViewPureChecker::reportFunctionCallMutability(StateMutability _mutability, langutil::SourceLocation const& _location)
 {
-	// We only require "nonpayable" to call a payble function.
+	// We only require "nonpayable" to call a payable function.
 	if (_mutability == StateMutability::Payable)
 		_mutability = StateMutability::NonPayable;
 	reportMutability(_mutability, _location);
@@ -334,13 +334,19 @@ void ViewPureChecker::reportFunctionCallMutability(StateMutability _mutability, 
 void ViewPureChecker::endVisit(BinaryOperation const& _binaryOperation)
 {
 	if (_binaryOperation.annotation().userDefinedFunction.set())
+	{
+		solAssert(*_binaryOperation.annotation().userDefinedFunction);
 		reportFunctionCallMutability((*_binaryOperation.annotation().userDefinedFunction)->stateMutability(), _binaryOperation.location());
+	}
 }
 
 void ViewPureChecker::endVisit(UnaryOperation const& _unaryOperation)
 {
 	if (_unaryOperation.annotation().userDefinedFunction.set())
+	{
+		solAssert((*_unaryOperation.annotation().userDefinedFunction));
 		reportFunctionCallMutability((*_unaryOperation.annotation().userDefinedFunction)->stateMutability(), _unaryOperation.location());
+	}
 }
 
 void ViewPureChecker::endVisit(FunctionCall const& _functionCall)

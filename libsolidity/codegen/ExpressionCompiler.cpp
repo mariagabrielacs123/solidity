@@ -414,6 +414,7 @@ bool ExpressionCompiler::visit(UnaryOperation const& _unaryOperation)
 	if (_unaryOperation.annotation().userDefinedFunction.set())
 	{
 		FunctionDefinition const* function = *_unaryOperation.annotation().userDefinedFunction;
+		solAssert(function);
 		solAssert(
 			function->isFree() || function->libraryFunction(),
 			"Only file-level functions and library functions can be bound to a user type operator."
@@ -542,6 +543,7 @@ bool ExpressionCompiler::visit(BinaryOperation const& _binaryOperation)
 	if (_binaryOperation.annotation().userDefinedFunction.set())
 	{
 		FunctionDefinition const* function = *_binaryOperation.annotation().userDefinedFunction;
+		solAssert(function);
 		solAssert(
 			function->isFree() || function->libraryFunction(),
 			"Only file-level functions and library functions can be bound to a user type operator."
