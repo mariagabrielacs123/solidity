@@ -33,7 +33,7 @@ jobs:
                   }
                 }
               }
-            }' --raw-field org=$ORGANIZATION --field number=$PROJECT_NUMBER >> project_data.json
+            }' --raw-field organization="$ORGANIZATION" --field project_number="$PROJECT_NUMBER" >> project_data.json
           echo 'COLUMN_ID='$(jq '.data.organization.project.columns.nodes[] | select(.name == "Triage") | .id' project_data.json) >> $GITHUB_ENV
           echo 'COLUMN_NAME='$(jq '.data.organization.project.columns.nodes[] | select(.name == "Triage") | .name' project_data.json) >> $GITHUB_ENV
       - name: Add issue#${{ github.event.issue.number }} to Triage column
