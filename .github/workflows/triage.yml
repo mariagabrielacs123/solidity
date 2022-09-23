@@ -17,9 +17,6 @@ jobs:
     if: join(github.event.issue.labels) == ''
     steps:
       - name: Retrieve the content of all columns on the board
-        env:
-          ORGANIZATION: ${{ env.ORGANIZATION }}
-          PROJECT_NUMBER: ${{ env.PROJECT_NUMBER }}
         run: |
           gh api graphql --raw-field query='
             query($org: String!, $number: Int!) {
@@ -39,7 +36,6 @@ jobs:
       - name: Add issue#${{ github.event.issue.number }} to Triage column
         env:
           ISSUE_ID: ${{ github.event.issue.node_id }}
-          PROJECT_NUMBER: ${{ env.PROJECT_NUMBER }}
         run: |
           if [ ${{ env.DRY_RUN }} ]; then
             echo "Adding issue: ${{ github.event.issue.number }} to column $COLUMN_NAME in project $PROJECT_NUMBER"
