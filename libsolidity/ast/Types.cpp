@@ -386,7 +386,7 @@ vector<UsingForDirective const*> usingForDirectivesForType(Type const& _type, AS
 
 }
 
-Result<FunctionDefinition const*> Type::userDefinedOperator(Token _token, ASTNode const& _scope, bool _unaryOperation) const
+Result<FunctionDefinition const*> Type::operatorDefinition(Token _token, ASTNode const& _scope, bool _unaryOperation) const
 {
 	if (!typeDefinition() || !util::contains(overridableOperators, _token))
 		return nullptr;

@@ -1731,7 +1731,7 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 
 
 	// Check if the operator is built-in or user-defined.
-	Result<FunctionDefinition const*> userDefinedOperatorResult = subExprType->userDefinedOperator(
+	Result<FunctionDefinition const*> userDefinedOperatorResult = subExprType->operatorDefinition(
 		_operation.getOperator(),
 		*currentDefinitionScope(),
 		true // _unaryOperation
@@ -1788,7 +1788,7 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 	_operation.annotation().isConstant = false;
 
 	// Check if the operator is built-in or user-defined.
-	Result<FunctionDefinition const*> userDefinedOperatorResult = leftType->userDefinedOperator(
+	Result<FunctionDefinition const*> userDefinedOperatorResult = leftType->operatorDefinition(
 		_operation.getOperator(),
 		*currentDefinitionScope(),
 		false // _unaryOperation
