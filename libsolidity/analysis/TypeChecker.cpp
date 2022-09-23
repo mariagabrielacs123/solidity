@@ -1736,8 +1736,10 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 		*currentDefinitionScope(),
 		true // _unaryOperation
 	);
+
 	if (userDefinedOperatorResult)
 		_operation.annotation().userDefinedFunction = userDefinedOperatorResult;
+
 	FunctionType const* userDefinedFunctionType = nullptr;
 	if (userDefinedOperatorResult)
 		userDefinedFunctionType = &dynamic_cast<FunctionType const&>(
@@ -3828,8 +3830,9 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 			solAssert(m_errorReporter.hasErrors());
 			return;
 		}
-		solAssert(_usingFor.typeName()->annotation().type);
-		if (Declaration const* typeDefinition = _usingFor.typeName()->annotation().type->typeDefinition())
+		Type const* usingForType = _usingFor.typeName()->annotation().type;
+		solAssert(usingForType);
+		if (Declaration const* typeDefinition = usingForType->typeDefinition())
 		{
 			if (typeDefinition->scope() != m_currentSourceUnit)
 				m_errorReporter.typeError(
@@ -3863,9 +3866,10 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 		return;
 	}
 
-	solAssert(_usingFor.typeName()->annotation().type);
+	Type const* usingForType = _usingFor.typeName()->annotation().type;
+	solAssert(usingForType);
 
-	if (_usingFor.typeName()->annotation().type->category() == Type::Category::Enum)
+	if (usingForType->category() == Type::Category::Enum)
 		m_errorReporter.typeError(
 			9921_error,
 			_usingFor.location(),
@@ -3874,7 +3878,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 
 	Type const* normalizedType = TypeProvider::withLocationIfReference(
 		DataLocation::Storage,
-		_usingFor.typeName()->annotation().type
+		usingForType
 	);
 	solAssert(normalizedType);
 
@@ -3905,7 +3909,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				3100_error,
 				path->location(),
 				"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
-				"cannot be bound to the type \"" + _usingFor.typeName()->annotation().type->canonicalName() +
+				"cannot be bound to the type \"" + usingForType->canonicalName() +
 				"\" because the type cannot be implicitly converted to the first argument" +
 				" of the function (\"" + functionType->selfType()->humanReadableName() + "\")" +
 				(
@@ -3916,7 +3920,9 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 			);
 		else if (operator_)
 		{
-			if (!_usingFor.typeName()->annotation().type->typeDefinition())
+			TypePointers const& parameterTypes = functionType->parameterTypesIncludingSelf();
+			size_t const parameterCount = parameterTypes.size();
+			if (!usingForType->typeDefinition())
 			{
 				m_errorReporter.typeError(
 					5332_error,
@@ -3933,9 +3939,9 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 					TokenTraits::isCompareOp(*operator_)
 				) &&
 				(
-					functionType->parameterTypesIncludingSelf().size() != 2 ||
-					*functionType->parameterTypesIncludingSelf().at(0) !=
-					*functionType->parameterTypesIncludingSelf().at(1)
+					parameterCount != 2 ||
+					*parameterTypes.at(0) !=
+					*parameterTypes.at(1)
 				)
 			)
 				m_errorReporter.typeError(
@@ -3943,7 +3949,7 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 					path->location(),
 					"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
 					"needs to have two parameters of type " +
-					_usingFor.typeName()->annotation().type->canonicalName() +
+					usingForType->canonicalName() +
 					" and the same data location to be used for the operator " +
 					TokenTraits::friendlyName(*operator_) +
 					"."
@@ -3952,10 +3958,10 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 				!TokenTraits::isBinaryOp(*operator_) &&
 				TokenTraits::isUnaryOp(*operator_) &&
 				(
-					functionType->parameterTypesIncludingSelf().size() != 1 ||
+					parameterCount != 1 ||
 					(
-						*TypeProvider::withLocationIfReference(DataLocation::Storage, functionType->parameterTypesIncludingSelf().front()) !=
-						*TypeProvider::withLocationIfReference(DataLocation::Storage, _usingFor.typeName()->annotation().type)
+						*TypeProvider::withLocationIfReference(DataLocation::Storage, parameterTypes.front()) !=
+						*TypeProvider::withLocationIfReference(DataLocation::Storage, usingForType)
 					)
 				)
 			)
@@ -3964,32 +3970,31 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 						path->location(),
 						"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
 						"needs to have exactly one parameter of type " +
-						_usingFor.typeName()->annotation().type->canonicalName() +
+						usingForType->canonicalName() +
 						" to be used for the operator " +
 						TokenTraits::friendlyName(*operator_) +
 						"."
 					);
 			else if (
 				(
-					functionType->parameterTypesIncludingSelf().size() == 2 &&
+					parameterCount == 2 &&
 					(
-						(*functionType->parameterTypesIncludingSelf().at(0) != *functionType->parameterTypesIncludingSelf().at(1)) ||
+						(*parameterTypes.at(0) != *parameterTypes.at(1)) ||
 						(
-							*TypeProvider::withLocationIfReference(DataLocation::Storage, functionType->parameterTypesIncludingSelf().at(0)) !=
-							*TypeProvider::withLocationIfReference(DataLocation::Storage, _usingFor.typeName()->annotation().type)
+							*TypeProvider::withLocationIfReference(DataLocation::Storage, parameterTypes.at(0)) !=
+							*TypeProvider::withLocationIfReference(DataLocation::Storage, usingForType)
 						)
 					)
 				) ||
 				(
-					functionType->parameterTypesIncludingSelf().size() == 1 &&
+					parameterCount == 1 &&
 					(
-						*TypeProvider::withLocationIfReference(DataLocation::Storage, functionType->parameterTypesIncludingSelf().at(0)) !=
-						*TypeProvider::withLocationIfReference(DataLocation::Storage, _usingFor.typeName()->annotation().type)
+						*TypeProvider::withLocationIfReference(DataLocation::Storage, parameterTypes.at(0)) !=
+						*TypeProvider::withLocationIfReference(DataLocation::Storage, usingForType)
 					)
 				) ||
 				(
-					functionType->parameterTypesIncludingSelf().size() != 1 &&
-					functionType->parameterTypesIncludingSelf().size() != 2
+					parameterCount != 1 && parameterCount != 2
 				)
 			)
 				m_errorReporter.typeError(
@@ -3997,15 +4002,17 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 					path->location(),
 					"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
 					"needs to have one or two parameters of type " +
-					_usingFor.typeName()->annotation().type->canonicalName() +
+					usingForType->canonicalName() +
 					" and the same data location to be used for the operator " +
 					TokenTraits::friendlyName(*operator_) +
 					"."
 				);
 
+			TypePointers const& returnParameterTypes = functionType->returnParameterTypes();
+			size_t const returnParameterCount = returnParameterTypes.size();
 			if (
 				TokenTraits::isCompareOp(*operator_) &&
-				(functionType->returnParameterTypes().size() != 1 || *functionType->returnParameterTypes().front() != *TypeProvider::boolean())
+				(returnParameterCount != 1 || *returnParameterTypes.front() != *TypeProvider::boolean())
 			)
 				m_errorReporter.typeError(
 					7995_error,
@@ -4019,10 +4026,10 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 			else if (!TokenTraits::isCompareOp(*operator_))
 			{
 				if (
-					functionType->returnParameterTypes().size() != 1 ||
+					returnParameterCount != 1 ||
 					(
-						*TypeProvider::withLocationIfReference(DataLocation::Storage, functionType->returnParameterTypes().front()) !=
-						*TypeProvider::withLocationIfReference(DataLocation::Storage, _usingFor.typeName()->annotation().type)
+						*TypeProvider::withLocationIfReference(DataLocation::Storage, returnParameterTypes.front()) !=
+						*TypeProvider::withLocationIfReference(DataLocation::Storage, usingForType)
 					)
 				)
 					m_errorReporter.typeError(
@@ -4030,12 +4037,12 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 						path->location(),
 						"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
 						"needs to return exactly one value of type " +
-						_usingFor.typeName()->annotation().type->canonicalName() +
+						usingForType->canonicalName() +
 						" to be used for the operator " +
 						TokenTraits::friendlyName(*operator_) +
 						"."
 					);
-				else if (*functionType->returnParameterTypes().front() != *functionType->parameterTypesIncludingSelf().front())
+				else if (*returnParameterTypes.front() != *parameterTypes.front())
 					m_errorReporter.typeError(
 						3605_error,
 						path->location(),
