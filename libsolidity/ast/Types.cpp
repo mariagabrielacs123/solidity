@@ -25,6 +25,7 @@
 
 #include <libsolidity/ast/AST.h>
 #include <libsolidity/ast/TypeProvider.h>
+#include <libsolidity/ast/OverridableOperators.h>
 
 #include <libsolidity/analysis/ConstantEvaluator.h>
 
@@ -36,7 +37,6 @@
 #include <libsolutil/StringUtils.h>
 #include <libsolutil/UTF8.h>
 #include <libsolutil/Visitor.h>
-#include <libsolutil/OverridableOperators.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -388,7 +388,7 @@ vector<UsingForDirective const*> usingForDirectivesForType(Type const& _type, AS
 
 Result<FunctionDefinition const*> Type::userDefinedOperator(Token _token, ASTNode const& _scope, bool _unaryOperation) const
 {
-	if (!typeDefinition())
+	if (!typeDefinition() || !util::contains(overridableOperators, _token))
 		return nullptr;
 
 	set<FunctionDefinition const*> matchingDefinitions;
@@ -425,14 +425,10 @@ Result<FunctionDefinition const*> Type::userDefinedOperator(Token _token, ASTNod
 
 	if (matchingDefinitions.size() == 1)
 		return *matchingDefinitions.begin();
-	else if (util::contains(util::overridableOperators, _token))
-	{
-		if (matchingDefinitions.size() == 0)
-			return Result<FunctionDefinition const*>::err("No matching user-defined operator found.");
-		else
-			return Result<FunctionDefinition const*>::err("Multiple user-defined functions provided for this operator.");
-	}
-	return nullptr;
+	else if (matchingDefinitions.size() == 0)
+		return Result<FunctionDefinition const*>::err("No matching user-defined operator found.");
+	else
+		return Result<FunctionDefinition const*>::err("Multiple user-defined functions provided for this operator.");
 }
 
 MemberList::MemberMap Type::boundFunctions(Type const& _type, ASTNode const& _scope)
