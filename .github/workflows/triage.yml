@@ -8,6 +8,7 @@ on:
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   ORGANIZATION: ethereum
+  REPOSITORY: solidity
   PROJECT_NUMBER: 43
   DRY_RUN: true
 
@@ -18,33 +19,43 @@ jobs:
     steps:
       - name: Retrieve the content of all columns on the board
         run: |
-          gh api graphql --raw-field query='
-            query($org: String!, $number: Int!) {
-              organization(login: $org) {
-                project(number: $number) {
-                  columns(first: 10) {
-                    nodes {
-                      id,
-                      name
+          gh api graphql \
+            --raw-field owner="$ORGANIZATION" \
+            --field project_number="$PROJECT_NUMBER" \
+            --raw-field repository_name="$REPOSITORY" \
+            --raw-field query='
+              query($owner: String!, $repository_name: String!, $project_number: Int!) {
+                repository(owner: $owner, name: $repository_name) {
+                  project(number: $project_number) {
+                    columns(first: 10) {
+                      nodes {
+                        id,
+                        name
+                      }
                     }
                   }
                 }
-              }
-            }' --raw-field organization="$ORGANIZATION" --field project_number="$PROJECT_NUMBER" >> project_data.json
-          echo 'COLUMN_ID='$(jq '.data.organization.project.columns.nodes[] | select(.name == "Triage") | .id' project_data.json) >> $GITHUB_ENV
-          echo 'COLUMN_NAME='$(jq '.data.organization.project.columns.nodes[] | select(.name == "Triage") | .name' project_data.json) >> $GITHUB_ENV
+              }' > project_columns.json
+          echo 'COLUMN_ID='$(jq '.data.repository.project.columns.nodes[] | select(.name == "Triage") | .id' project_columns.json) >> $GITHUB_ENV
+          echo 'COLUMN_NAME='$(jq '.data.repository.project.columns.nodes[] | select(.name == "Triage") | .name' project_columns.json) >> $GITHUB_ENV
+
       - name: Add issue#${{ github.event.issue.number }} to Triage column
         env:
           ISSUE_ID: ${{ github.event.issue.node_id }}
         run: |
-          if [ ${{ env.DRY_RUN }} ]; then
-            echo "Adding issue: ${{ github.event.issue.number }} to column $COLUMN_NAME in project $PROJECT_NUMBER"
-          else
-            gh api graphql --raw-field query='
-              mutation($column: ID!, $issue: ID!) {
-                addProjectCard(input: {
-                  projectColumnId: $column,
-                  contentId: $issue
-                }) { clientMutationId }
-              }' --raw-field column=$COLUMN_ID --raw-field issue=$ISSUE_ID --silent
+          echo "Adding issue: ${{ github.event.issue.number }} to column $COLUMN_NAME in project $PROJECT_NUMBER"
+          if [[ "${{ env.DRY_RUN }}" == "false" ]]; then
+            gh api graphql \
+              --silent \
+              --raw-field column=$COLUMN_ID \
+              --raw-field issue=$ISSUE_ID \
+              --raw-field query='
+                mutation($column: ID!, $issue: ID!) {
+                  addProjectCard(input: {
+                    projectColumnId: $column,
+                    contentId: $issue
+                  }) {
+                    clientMutationId
+                  }
+                }'
           fi
