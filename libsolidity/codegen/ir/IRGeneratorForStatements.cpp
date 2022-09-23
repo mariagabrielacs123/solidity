@@ -675,10 +675,11 @@ bool IRGeneratorForStatements::visit(UnaryOperation const& _unaryOperation)
 
 	if (_unaryOperation.annotation().userDefinedFunction.set())
 	{
-		FunctionDefinition const* function = *_unaryOperation.annotation().userDefinedFunction;
 		_unaryOperation.subExpression().accept(*this);
 		setLocation(_unaryOperation);
 
+		FunctionDefinition const* function = *_unaryOperation.annotation().userDefinedFunction;
+		solAssert(function);
 		solAssert(
 			function->isFree() || function->libraryFunction(),
 			"Only file-level functions and library functions can be bound to a user type operator."
@@ -820,11 +821,12 @@ bool IRGeneratorForStatements::visit(BinaryOperation const& _binOp)
 
 	if (_binOp.annotation().userDefinedFunction.set())
 	{
-		FunctionDefinition const* function = *_binOp.annotation().userDefinedFunction;
 		_binOp.leftExpression().accept(*this);
 		_binOp.rightExpression().accept(*this);
 		setLocation(_binOp);
 
+		FunctionDefinition const* function = *_binOp.annotation().userDefinedFunction;
+		solAssert(function);
 		solAssert(
 			function->isFree() || function->libraryFunction(),
 			"Only file-level functions and library functions can be bound to a user type operator."
