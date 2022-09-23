@@ -3986,24 +3986,14 @@ void TypeChecker::endVisit(UsingForDirective const& _usingFor)
 						*TypeProvider::withLocationIfReference(DataLocation::Storage, functionType->parameterTypesIncludingSelf().at(0)) !=
 						*TypeProvider::withLocationIfReference(DataLocation::Storage, _usingFor.typeName()->annotation().type)
 					)
+				) ||
+				(
+					functionType->parameterTypesIncludingSelf().size() != 1 &&
+					functionType->parameterTypesIncludingSelf().size() != 2
 				)
 			)
 				m_errorReporter.typeError(
 					7617_error,
-					path->location(),
-					"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
-					"needs to have one or two parameters of type " +
-					_usingFor.typeName()->annotation().type->canonicalName() +
-					" and the same data location to be used for the operator " +
-					TokenTraits::friendlyName(*operator_) +
-					"."
-				);
-			else if (
-				functionType->parameterTypesIncludingSelf().size() != 1 &&
-				functionType->parameterTypesIncludingSelf().size() != 2
-			)
-				m_errorReporter.typeError(
-					8112_error,
 					path->location(),
 					"The function \"" + joinHumanReadable(path->path(), ".") + "\" "+
 					"needs to have one or two parameters of type " +
