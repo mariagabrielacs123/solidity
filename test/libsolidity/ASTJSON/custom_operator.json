@@ -2,20 +2,20 @@
   "absolutePath": "a",
   "exportedSymbols":
   {
-    "C":
-    [
-      40
-    ],
     "UInt":
     [
       2
     ],
     "add":
     [
-      24
+      19
+    ],
+    "f":
+    [
+      34
     ]
   },
-  "id": 41,
+  "id": 35,
   "nodeType": "SourceUnit",
   "nodes":
   [
@@ -52,7 +52,7 @@
               "27:3:1"
             ],
             "nodeType": "IdentifierPath",
-            "referencedDeclaration": 24,
+            "referencedDeclaration": 19,
             "src": "27:3:1"
           },
           "operator": "+"
@@ -90,97 +90,12 @@
     {
       "body":
       {
-        "id": 23,
+        "id": 18,
         "nodeType": "Block",
-        "src": "92:28:1",
-        "statements":
-        [
-          {
-            "expression":
-            {
-              "arguments":
-              [
-                {
-                  "hexValue": "30",
-                  "id": 20,
-                  "isConstant": false,
-                  "isLValue": false,
-                  "isPure": true,
-                  "kind": "number",
-                  "lValueRequested": false,
-                  "nodeType": "Literal",
-                  "src": "115:1:1",
-                  "typeDescriptions":
-                  {
-                    "typeIdentifier": "t_rational_0_by_1",
-                    "typeString": "int_const 0"
-                  },
-                  "value": "0"
-                }
-              ],
-              "expression":
-              {
-                "argumentTypes":
-                [
-                  {
-                    "typeIdentifier": "t_rational_0_by_1",
-                    "typeString": "int_const 0"
-                  }
-                ],
-                "expression":
-                {
-                  "id": 18,
-                  "name": "UInt",
-                  "nodeType": "Identifier",
-                  "overloadedDeclarations": [],
-                  "referencedDeclaration": 2,
-                  "src": "105:4:1",
-                  "typeDescriptions":
-                  {
-                    "typeIdentifier": "t_type$_t_userDefinedValueType$_UInt_$2_$",
-                    "typeString": "type(UInt)"
-                  }
-                },
-                "id": 19,
-                "isConstant": false,
-                "isLValue": false,
-                "isPure": true,
-                "lValueRequested": false,
-                "memberLocation": "110:4:1",
-                "memberName": "wrap",
-                "nodeType": "MemberAccess",
-                "src": "105:9:1",
-                "typeDescriptions":
-                {
-                  "typeIdentifier": "t_function_wrap_pure$_t_uint8_$returns$_t_userDefinedValueType$_UInt_$2_$",
-                  "typeString": "function (uint8) pure returns (UInt)"
-                }
-              },
-              "id": 21,
-              "isConstant": false,
-              "isLValue": false,
-              "isPure": true,
-              "kind": "functionCall",
-              "lValueRequested": false,
-              "nameLocations": [],
-              "names": [],
-              "nodeType": "FunctionCall",
-              "src": "105:12:1",
-              "tryCall": false,
-              "typeDescriptions":
-              {
-                "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
-                "typeString": "UInt"
-              }
-            },
-            "functionReturnParameters": 17,
-            "id": 22,
-            "nodeType": "Return",
-            "src": "98:19:1"
-          }
-        ]
+        "src": "92:2:1",
+        "statements": []
       },
-      "id": 24,
+      "id": 19,
       "implemented": true,
       "kind": "freeFunction",
       "modifiers": [],
@@ -200,7 +115,7 @@
             "name": "",
             "nameLocation": "-1:-1:-1",
             "nodeType": "VariableDeclaration",
-            "scope": 24,
+            "scope": 19,
             "src": "60:4:1",
             "stateVariable": false,
             "storageLocation": "default",
@@ -242,7 +157,7 @@
             "name": "",
             "nameLocation": "-1:-1:-1",
             "nodeType": "VariableDeclaration",
-            "scope": 24,
+            "scope": 19,
             "src": "66:4:1",
             "stateVariable": false,
             "storageLocation": "default",
@@ -293,7 +208,7 @@
             "name": "",
             "nameLocation": "-1:-1:-1",
             "nodeType": "VariableDeclaration",
-            "scope": 24,
+            "scope": 19,
             "src": "86:4:1",
             "stateVariable": false,
             "storageLocation": "default",
@@ -331,253 +246,230 @@
         ],
         "src": "85:6:1"
       },
-      "scope": 41,
-      "src": "47:73:1",
+      "scope": 35,
+      "src": "47:47:1",
       "stateMutability": "pure",
       "virtual": false,
       "visibility": "internal"
     },
     {
-      "abstract": false,
-      "baseContracts": [],
-      "canonicalName": "C",
-      "contractDependencies": [],
-      "contractKind": "contract",
-      "fullyImplemented": true,
-      "id": 40,
-      "linearizedBaseContracts":
-      [
-        40
-      ],
-      "name": "C",
-      "nameLocation": "130:1:1",
-      "nodeType": "ContractDefinition",
-      "nodes":
-      [
-        {
-          "body":
+      "body":
+      {
+        "id": 33,
+        "nodeType": "Block",
+        "src": "113:36:1",
+        "statements":
+        [
           {
-            "id": 38,
-            "nodeType": "Block",
-            "src": "163:44:1",
-            "statements":
-            [
+            "expression":
+            {
+              "commonType":
               {
+                "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
+                "typeString": "UInt"
+              },
+              "function": 19,
+              "id": 31,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": false,
+              "lValueRequested": false,
+              "leftExpression":
+              {
+                "arguments":
+                [
+                  {
+                    "hexValue": "30",
+                    "id": 25,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "number",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "129:1:1",
+                    "typeDescriptions":
+                    {
+                      "typeIdentifier": "t_rational_0_by_1",
+                      "typeString": "int_const 0"
+                    },
+                    "value": "0"
+                  }
+                ],
                 "expression":
                 {
-                  "commonType":
+                  "argumentTypes":
+                  [
+                    {
+                      "typeIdentifier": "t_rational_0_by_1",
+                      "typeString": "int_const 0"
+                    }
+                  ],
+                  "expression":
                   {
-                    "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
-                    "typeString": "UInt"
+                    "id": 22,
+                    "name": "UInt",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 2,
+                    "src": "119:4:1",
+                    "typeDescriptions":
+                    {
+                      "typeIdentifier": "t_type$_t_userDefinedValueType$_UInt_$2_$",
+                      "typeString": "type(UInt)"
+                    }
                   },
-                  "function": 24,
-                  "id": 36,
+                  "id": 24,
                   "isConstant": false,
                   "isLValue": false,
-                  "isPure": false,
+                  "isPure": true,
                   "lValueRequested": false,
-                  "leftExpression":
-                  {
-                    "arguments":
-                    [
-                      {
-                        "hexValue": "30",
-                        "id": 30,
-                        "isConstant": false,
-                        "isLValue": false,
-                        "isPure": true,
-                        "kind": "number",
-                        "lValueRequested": false,
-                        "nodeType": "Literal",
-                        "src": "183:1:1",
-                        "typeDescriptions":
-                        {
-                          "typeIdentifier": "t_rational_0_by_1",
-                          "typeString": "int_const 0"
-                        },
-                        "value": "0"
-                      }
-                    ],
-                    "expression":
-                    {
-                      "argumentTypes":
-                      [
-                        {
-                          "typeIdentifier": "t_rational_0_by_1",
-                          "typeString": "int_const 0"
-                        }
-                      ],
-                      "expression":
-                      {
-                        "id": 27,
-                        "name": "UInt",
-                        "nodeType": "Identifier",
-                        "overloadedDeclarations": [],
-                        "referencedDeclaration": 2,
-                        "src": "173:4:1",
-                        "typeDescriptions":
-                        {
-                          "typeIdentifier": "t_type$_t_userDefinedValueType$_UInt_$2_$",
-                          "typeString": "type(UInt)"
-                        }
-                      },
-                      "id": 29,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "lValueRequested": false,
-                      "memberLocation": "178:4:1",
-                      "memberName": "wrap",
-                      "nodeType": "MemberAccess",
-                      "src": "173:9:1",
-                      "typeDescriptions":
-                      {
-                        "typeIdentifier": "t_function_wrap_pure$_t_uint8_$returns$_t_userDefinedValueType$_UInt_$2_$",
-                        "typeString": "function (uint8) pure returns (UInt)"
-                      }
-                    },
-                    "id": 31,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": true,
-                    "kind": "functionCall",
-                    "lValueRequested": false,
-                    "nameLocations": [],
-                    "names": [],
-                    "nodeType": "FunctionCall",
-                    "src": "173:12:1",
-                    "tryCall": false,
-                    "typeDescriptions":
-                    {
-                      "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
-                      "typeString": "UInt"
-                    }
-                  },
-                  "nodeType": "BinaryOperation",
-                  "operator": "+",
-                  "rightExpression":
-                  {
-                    "arguments":
-                    [
-                      {
-                        "hexValue": "31",
-                        "id": 34,
-                        "isConstant": false,
-                        "isLValue": false,
-                        "isPure": true,
-                        "kind": "number",
-                        "lValueRequested": false,
-                        "nodeType": "Literal",
-                        "src": "198:1:1",
-                        "typeDescriptions":
-                        {
-                          "typeIdentifier": "t_rational_1_by_1",
-                          "typeString": "int_const 1"
-                        },
-                        "value": "1"
-                      }
-                    ],
-                    "expression":
-                    {
-                      "argumentTypes":
-                      [
-                        {
-                          "typeIdentifier": "t_rational_1_by_1",
-                          "typeString": "int_const 1"
-                        }
-                      ],
-                      "expression":
-                      {
-                        "id": 32,
-                        "name": "UInt",
-                        "nodeType": "Identifier",
-                        "overloadedDeclarations": [],
-                        "referencedDeclaration": 2,
-                        "src": "188:4:1",
-                        "typeDescriptions":
-                        {
-                          "typeIdentifier": "t_type$_t_userDefinedValueType$_UInt_$2_$",
-                          "typeString": "type(UInt)"
-                        }
-                      },
-                      "id": 33,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "lValueRequested": false,
-                      "memberLocation": "193:4:1",
-                      "memberName": "wrap",
-                      "nodeType": "MemberAccess",
-                      "src": "188:9:1",
-                      "typeDescriptions":
-                      {
-                        "typeIdentifier": "t_function_wrap_pure$_t_uint8_$returns$_t_userDefinedValueType$_UInt_$2_$",
-                        "typeString": "function (uint8) pure returns (UInt)"
-                      }
-                    },
-                    "id": 35,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": true,
-                    "kind": "functionCall",
-                    "lValueRequested": false,
-                    "nameLocations": [],
-                    "names": [],
-                    "nodeType": "FunctionCall",
-                    "src": "188:12:1",
-                    "tryCall": false,
-                    "typeDescriptions":
-                    {
-                      "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
-                      "typeString": "UInt"
-                    }
-                  },
-                  "src": "173:27:1",
+                  "memberLocation": "124:4:1",
+                  "memberName": "wrap",
+                  "nodeType": "MemberAccess",
+                  "src": "119:9:1",
                   "typeDescriptions":
                   {
-                    "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
-                    "typeString": "UInt"
+                    "typeIdentifier": "t_function_wrap_pure$_t_uint8_$returns$_t_userDefinedValueType$_UInt_$2_$",
+                    "typeString": "function (uint8) pure returns (UInt)"
                   }
                 },
-                "id": 37,
-                "nodeType": "ExpressionStatement",
-                "src": "173:27:1"
+                "id": 26,
+                "isConstant": false,
+                "isLValue": false,
+                "isPure": true,
+                "kind": "functionCall",
+                "lValueRequested": false,
+                "nameLocations": [],
+                "names": [],
+                "nodeType": "FunctionCall",
+                "src": "119:12:1",
+                "tryCall": false,
+                "typeDescriptions":
+                {
+                  "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
+                  "typeString": "UInt"
+                }
+              },
+              "nodeType": "BinaryOperation",
+              "operator": "+",
+              "rightExpression":
+              {
+                "arguments":
+                [
+                  {
+                    "hexValue": "31",
+                    "id": 29,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "number",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "144:1:1",
+                    "typeDescriptions":
+                    {
+                      "typeIdentifier": "t_rational_1_by_1",
+                      "typeString": "int_const 1"
+                    },
+                    "value": "1"
+                  }
+                ],
+                "expression":
+                {
+                  "argumentTypes":
+                  [
+                    {
+                      "typeIdentifier": "t_rational_1_by_1",
+                      "typeString": "int_const 1"
+                    }
+                  ],
+                  "expression":
+                  {
+                    "id": 27,
+                    "name": "UInt",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 2,
+                    "src": "134:4:1",
+                    "typeDescriptions":
+                    {
+                      "typeIdentifier": "t_type$_t_userDefinedValueType$_UInt_$2_$",
+                      "typeString": "type(UInt)"
+                    }
+                  },
+                  "id": 28,
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": true,
+                  "lValueRequested": false,
+                  "memberLocation": "139:4:1",
+                  "memberName": "wrap",
+                  "nodeType": "MemberAccess",
+                  "src": "134:9:1",
+                  "typeDescriptions":
+                  {
+                    "typeIdentifier": "t_function_wrap_pure$_t_uint8_$returns$_t_userDefinedValueType$_UInt_$2_$",
+                    "typeString": "function (uint8) pure returns (UInt)"
+                  }
+                },
+                "id": 30,
+                "isConstant": false,
+                "isLValue": false,
+                "isPure": true,
+                "kind": "functionCall",
+                "lValueRequested": false,
+                "nameLocations": [],
+                "names": [],
+                "nodeType": "FunctionCall",
+                "src": "134:12:1",
+                "tryCall": false,
+                "typeDescriptions":
+                {
+                  "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
+                  "typeString": "UInt"
+                }
+              },
+              "src": "119:27:1",
+              "typeDescriptions":
+              {
+                "typeIdentifier": "t_userDefinedValueType$_UInt_$2",
+                "typeString": "UInt"
               }
-            ]
-          },
-          "functionSelector": "26121ff0",
-          "id": 39,
-          "implemented": true,
-          "kind": "function",
-          "modifiers": [],
-          "name": "f",
-          "nameLocation": "147:1:1",
-          "nodeType": "FunctionDefinition",
-          "parameters":
-          {
-            "id": 25,
-            "nodeType": "ParameterList",
-            "parameters": [],
-            "src": "148:2:1"
-          },
-          "returnParameters":
-          {
-            "id": 26,
-            "nodeType": "ParameterList",
-            "parameters": [],
-            "src": "163:0:1"
-          },
-          "scope": 40,
-          "src": "138:69:1",
-          "stateMutability": "pure",
-          "virtual": false,
-          "visibility": "public"
-        }
-      ],
-      "scope": 41,
-      "src": "121:88:1",
-      "usedErrors": []
+            },
+            "id": 32,
+            "nodeType": "ExpressionStatement",
+            "src": "119:27:1"
+          }
+        ]
+      },
+      "id": 34,
+      "implemented": true,
+      "kind": "freeFunction",
+      "modifiers": [],
+      "name": "f",
+      "nameLocation": "104:1:1",
+      "nodeType": "FunctionDefinition",
+      "parameters":
+      {
+        "id": 20,
+        "nodeType": "ParameterList",
+        "parameters": [],
+        "src": "105:2:1"
+      },
+      "returnParameters":
+      {
+        "id": 21,
+        "nodeType": "ParameterList",
+        "parameters": [],
+        "src": "113:0:1"
+      },
+      "scope": 35,
+      "src": "95:54:1",
+      "stateMutability": "pure",
+      "virtual": false,
+      "visibility": "internal"
     }
   ],
-  "src": "0:210:1"
+  "src": "0:150:1"
 }
