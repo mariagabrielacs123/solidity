@@ -99,9 +99,9 @@ bool ControlFlowBuilder::visit(UnaryOperation const& _operation)
 {
 	solAssert(!!m_currentNode);
 
-	visitNode(_operation);
 	if (_operation.annotation().userDefinedFunction.set())
 	{
+		visitNode(_operation);
 		_operation.subExpression().accept(*this);
 		solAssert(*_operation.annotation().userDefinedFunction);
 		m_currentNode->functionDefinition = *_operation.annotation().userDefinedFunction;
