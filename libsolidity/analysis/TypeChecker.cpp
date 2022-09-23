@@ -1867,11 +1867,7 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 		TypeProvider::boolean() :
 		commonType;
 
-
-	if (
-		!userDefinedOperatorResult &&
-		(_operation.getOperator() == Token::Exp || _operation.getOperator() == Token::SHL)
-	)
+	if (_operation.getOperator() == Token::Exp || _operation.getOperator() == Token::SHL)
 	{
 		string operation = _operation.getOperator() == Token::Exp ? "exponentiation" : "shift";
 		if (
