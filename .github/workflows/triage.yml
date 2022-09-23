@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     if: join(github.event.issue.labels) == ''
     steps:
-      - name: Retrieve project data
+      - name: Retrieve the content of all columns on the board
         env:
           ORGANIZATION: ${{ env.ORGANIZATION }}
           PROJECT_NUMBER: ${{ env.PROJECT_NUMBER }}
