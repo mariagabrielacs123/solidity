@@ -2,19 +2,52 @@ name: Triage new issues
 
 on:
   issues:
-    types: opened
+    types: [ opened ]
 
 env:
-  PROJECT: Solidity
+  GITHUB_TOKEN: ${{ secrets.PROJECT_BOARD_AUTOMATION }}
+  ORGANIZATION: ethereum
+  PROJECT_NUMBER: 43
+  DRY_RUN: true
 
 jobs:
-  triage:
+  triage_issues:
     runs-on: ubuntu-latest
     if: join(github.event.issue.labels) == ''
     steps:
-      - name: Move issues to triage
-        uses: alex-page/github-project-automation-plus@v0.8.1
-        with:
-          project: ${{ env.PROJECT }}
-          column: Triage
-          repo-token: ${{ secrets.PROJECT_BOARD_AUTOMATION }}
+      - name: Retrieve project data
+        env:
+          ORGANIZATION: ${{ env.ORGANIZATION }}
+          PROJECT_NUMBER: ${{ env.PROJECT_NUMBER }}
+        run: |
+          gh api graphql --raw-field query='
+            query($org: String!, $number: Int!) {
+              organization(login: $org) {
+                project(number: $number) {
+                  columns(first: 10) {
+                    nodes {
+                      id,
+                      name
+                    }
+                  }
+                }
+              }
+            }' --raw-field org=$ORGANIZATION --field number=$PROJECT_NUMBER >> project_data.json
+          echo 'COLUMN_ID='$(jq '.data.organization.project.columns.nodes[] | select(.name == "Triage") | .id' project_data.json) >> $GITHUB_ENV
+          echo 'COLUMN_NAME='$(jq '.data.organization.project.columns.nodes[] | select(.name == "Triage") | .name' project_data.json) >> $GITHUB_ENV
+      - name: Add issue#${{ github.event.issue.number }} to Triage column
+        env:
+          ISSUE_ID: ${{ github.event.issue.node_id }}
+          PROJECT_NUMBER: ${{ env.PROJECT_NUMBER }}
+        run: |
+          if [ ${{ env.DRY_RUN }} ]; then
+            echo "Adding issue: ${{ github.event.issue.number }} to column $COLUMN_NAME in project $PROJECT_NUMBER"
+          else
+            gh api graphql --raw-field query='
+              mutation($column: ID!, $issue: ID!) {
+                addProjectCard(input: {
+                  projectColumnId: $column,
+                  contentId: $issue
+                }) { clientMutationId }
+              }' --raw-field column=$COLUMN_ID --raw-field issue=$ISSUE_ID --silent
+          fi
