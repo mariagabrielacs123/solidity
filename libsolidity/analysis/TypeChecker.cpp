@@ -1740,14 +1740,7 @@ bool TypeChecker::visit(UnaryOperation const& _operation)
 	if (userDefinedOperatorResult)
 		_operation.annotation().userDefinedFunction = userDefinedOperatorResult;
 
-	FunctionType const* userDefinedFunctionType = nullptr;
-	if (userDefinedOperatorResult)
-		userDefinedFunctionType = &dynamic_cast<FunctionType const&>(
-			userDefinedOperatorResult.get()->libraryFunction() ?
-			*userDefinedOperatorResult.get()->typeViaContractName() :
-			*userDefinedOperatorResult.get()->type()
-		);
-
+	FunctionType const* userDefinedFunctionType = _operation.userDefinedFunctionType();
 	TypeResult builtinResult = subExprType->unaryOperatorResult(op);
 
 	solAssert(!builtinResult || !userDefinedOperatorResult);
@@ -1797,13 +1790,7 @@ void TypeChecker::endVisit(BinaryOperation const& _operation)
 	);
 	if (userDefinedOperatorResult)
 		_operation.annotation().userDefinedFunction = userDefinedOperatorResult;
-	FunctionType const* userDefinedFunctionType = nullptr;
-	if (userDefinedOperatorResult)
-		userDefinedFunctionType = &dynamic_cast<FunctionType const&>(
-			userDefinedOperatorResult.get()->libraryFunction() ?
-			*userDefinedOperatorResult.get()->typeViaContractName() :
-			*userDefinedOperatorResult.get()->type()
-		);
+	FunctionType const* userDefinedFunctionType = _operation.userDefinedFunctionType();
 	_operation.annotation().isPure =
 		*_operation.leftExpression().annotation().isPure &&
 		*_operation.rightExpression().annotation().isPure &&
