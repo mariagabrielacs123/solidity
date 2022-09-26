@@ -7,23 +7,26 @@ Using For
 *********
 
 The directive ``using A for B;`` can be used to bind functions (``A``)
-as operators to user-defined types or as member functions to any type (``B``).
-The member functions receive the object they are called on as their first
-parameter (like the ``self`` variable in Python). The operator functions
-receive operands as parameters.
+as operators to user-defined value types and structs or as member functions
+to any type (``B``). The member functions receive the object they are called
+on as their first parameter (like the ``self`` variable in Python).
+The operator functions receive operands as parameters.
 
 It is valid either at file level or inside a contract,
 at contract level.
 
 The first part, ``A``, can be one of:
 
-- a list of file-level or library functions (``using {f, g, h, L.t} for uint;``) -
+- a list of file-level or library internal functions (``using {f, g, h, L.t} for uint;``) -
   only those functions will be bound to the type as member functions,
 - the name of a library (``using L for uint;``) -
   all functions (both public and internal ones) of the library are bound to the type
   as member functions,
-- a list of assignments of functions to operators (``using {f as +, g as -} for T;``) -
-  the functions will be bound to the type (``T``) as operators.
+- a list of assignments of file-level or internal library functions to operators
+  (``using {f as +, g as -} for T;``) - the functions will be bound to the type (``T``)
+  as operators. Following binary operators are allowed to be used on the list: ``|``,
+  ``^``, ``&``, ``+``, ``-``, ``*``, ``/``, ``%``, ``==``, ``!=``, ``<``, ``>``, ``<=``,
+  ``>=``, ``<<``, ``>>``, ``**``. Allowed unary operators are: ``~``, ``!``, ``-``.
 
 At file level, the second part, ``B``, has to be an explicit type (without data location specifier).
 Inside contracts, you can also use ``using L for *;``, which has the effect that all functions
@@ -41,10 +44,11 @@ first parameter of each of these functions. This check is
 performed even if none of these functions are called.
 
 If you define an operator for a user-defined type (``using {f as +} for T``), then
-the type (``T``), types of function parameters and a type of function return value
+the type (``T``), types of function parameters and the type of the function return value
 have to be the same. The type (``T``) does not include data location.
 But, data location of the function parameters and function return value must be
-the same.
+the same. There is an exception for comparison operators for which, the return value
+type is always ``bool``.
 
 The ``using A for B;`` directive is active only within the current
 scope (either the contract or the current module/source unit),
@@ -54,7 +58,7 @@ outside of the contract or module in which it is used.
 When the directive is used at file level and applied to a
 user-defined type which was defined at file level in the same file,
 the word ``global`` can be added at the end. This will have the
-effect that the functions are bound to the type everywhere
+effect that the functions and operators are bound to the type everywhere
 the type is available (including other files), not only in the
 scope of the using statement.
 
@@ -182,6 +186,8 @@ Another example shows how to define a custom operator for a user-defined type:
     function div(UFixed16x2 a, UFixed16x2 b) pure returns (UFixed16x2) {
         uint32 a32 = UFixed16x2.unwrap(a);
         uint32 b32 = UFixed16x2.unwrap(b);
+        uint32 result32 = a32 * SCALE / b32;
+        require(result32 <= 65536, "Divide overflow");
         return UFixed16x2.wrap(uint16(a32 * SCALE / b32));
     }
 
