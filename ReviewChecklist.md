@@ -1,32 +1,33 @@
-# PR review checklist
-The Solidity compiler is a critical piece of infrastructure in the Ethereum ecosystem and for this
-reason our review process is quite strict.
+# PR Review Checklist
+The Solidity compiler is a critical piece of infrastructure in the Ethereum ecosystem.
+For this reason, our review process is quite strict and all PRs have to fulfill certain quality
+expectations and guidelines.
 The list below is meant to reduce the workload on the core team by helping contributors self-identify
-common issues before they are inevitably pointed out in the review.
-It's also meant as a final checklist for reviewers to go through before approving a PR.
+and solve common issues before they are pointed out in the review.
+It is also meant to serve as a final checklist for reviewers to go through before approving a PR.
 
-## Before you submit a PR
+## Before You Submit a PR
 - [ ] **Is the issue ready to be worked on?**
     - If the issue does not have a desirability label (`nice to have`, `should have`,
-        `must have eventually`, `must have`, `roadmap`) we still have not decided whether to implement it.
-    - If the issue `needs design`, we have not yet decided how it should be implemented.
+        `must have eventually`, `must have`, `roadmap`) we have not yet decided whether to implement it.
+    - If the issue has the `needs design` label, we have not yet decided how it should be implemented.
     - `good first issue candidate` means that the issue will potentially be a `good first issue`
-        eventually but at the moment it's not yet ready to be worked on.
-- [ ] **Is this a breaking change?** Breaking changes should be based on the `breaking` branch rather than on `develop`.
+        eventually but at the moment it is not yet ready to be worked on.
+- [ ] **Is this a breaking change?** Breaking changes should be based on the `breaking` branch rather than on the `develop` branch.
 - [ ] **Does the PR actually address the issue?**
     - [ ] Mention the issue number in the PR description.
-        If the PR solves it completely, use the `Fixes #<issue number>` form so that Github will close the issue automatically
-    - [ ] Do not include issue number in the PR title, branch name or commit description.
-- [ ] When submitting a PR from a fork **create a branch and give it a relevant name.**
+        If the PR solves it completely, use the `Fixes #<issue number>` form so that Github will close the issue automatically.
+    - [ ] Do not include the issue number in the PR title, branch name or commit description.
+- [ ] When submitting a PR from a fork **create a branch and give it a descriptive name.**
     E.g. `fix-array-abi-encoding-bug`.
-    Do not submit PRs directly from the `develop` branch of a fork since it makes rebasing and fetching new changes harder.
+    Do not submit PRs directly from the `develop` branch of your fork since it makes rebasing and fetching new changes harder.
 - [ ] **Does the PR depend on other PRs?**
     - [ ] If the PR has dependencies, mention them in bold in the description.
     - [ ] Avoid basing PRs from forks on branches other than `develop` or `breaking` because
         GitHub closes them when the base branch gets merged.
         Do this only for PRs created directly in the main repo.
 
-## Coding style and good practices
+## Coding Style and Good Practices
 - [ ] Does the PR follow our [coding style](CODING_STYLE.md)?
 
 ### Reliability
@@ -37,14 +38,14 @@ It's also meant as a final checklist for reviewers to go through before approvin
 - [ ] **Choose good names.**
     - [ ] Is the name straightforward to understand?
         Do you feel the need to jump back to the definition and remind yourself what it was whenever you see it?
-    - [ ] Is the name unambiguous in the context where it's used?
+    - [ ] Is the name unambiguous in the context where it is used?
     - [ ] Avoid abbreviations.
 - [ ] **Source files, classes and public functions should have docstrings.**
 - [ ] **Avoid code duplication.** But not fanatically. Minimal amounts of duplication are acceptable if it aids readability.
-- [ ] **Don't leave dead or commented-out code behind.** You can still see old code in history.
-      But if you really have a good reason to do it, always leave a comment explaining what it is and why it's there.
-- [ ] **Mark hacks as such.** If you have to leave behind something ugly, make sure to include a
-    comment that explains why and in what circumstances it can be removed.
+- [ ] **Do not leave dead or commented-out code behind.** You can still see old code in history.
+      If you really have a good reason to do it, always leave a comment explaining what it is and why it is there.
+- [ ] **Mark hacks as such.** If you have to leave behind a temporary workaround, make
+    sure to include a comment that explains why and in what circumstances it can be removed.
     Preferably link to an issue you reported upstream.
 - [ ] **Avoid obvious comments.**
 - [ ] **Do include comments when the reader may need extra context to understand the code.**
@@ -57,36 +58,36 @@ It's also meant as a final checklist for reviewers to go through before approvin
     Smaller PRs are easier and quicker to review.
     Splitting off refactors helps focus on the main point of the PR.
 
-### Common pitfalls
-These are covered by the coding style but come up so often that it's worth singling them out here:
-- [ ] **Always initialize value types in the definition,** even if you're sure you will assign them later.
+### Common Pitfalls
+The following points are all covered by the coding style but come up so often that it is worth singling them out here:
+- [ ] **Always initialize value types in the definition,** even if you are sure you will assign them later.
 - [ ] **Use "east const" style.** I.e. `T const*`, not `const T *`.
 - [ ] **Keep indentation consistent.** See our [`.editorconfig`](.editorconfig).
-    - [ ] Tabs for C++. But use them for indentation only. Any whitespace later on the line must be spaces.
+    - [ ] Tabs for C++. But use them for indentation only. Any whitespace later on the line must consist of spaces.
     - [ ] 4 spaces for most other file types.
-- [ ] **Use `auto` sparingly.** Only when the actual type is very long and complicated or when it's
+- [ ] **Use `auto` sparingly.** Only use it when the actual type is very long and complicated or when it is
     already used elsewhere in the same expression.
 - [ ] **Indent braces and parentheses in a way that makes nesting clear.**
 - [ ] **Use `using namespace` only in `.cpp` files.** Use it for `std` and our own modules.
-    Avoid unnecessary `std::` prefix in `.cpp` files (except for very common names like `std::move`).
+    Avoid unnecessary `std::` prefix in `.cpp` files (except for `std::move`).
 - [ ] **Use range-based loops and destructuring.**
-- [ ] **Include any headers you use directly,** even if they're implicitly included through other headers.
+- [ ] **Include any headers you use directly,** even if they are implicitly included through other headers.
 
 ## Documentation
 - [ ] **Does the PR update relevant documentation?**
 
-### Documentation style and good practices
+### Documentation Style and Good Practices
 - [ ] **Use double backticks in RST (``` ``x`` ```). Prefer single backticks in Markdown (`` `x` ``),**
     but note that double backticks are valid too and we use them in some cases for legacy reasons.
 - [ ] **Always start a new sentence on a new line.**
-    This way you don't have to rewrap the surrounding text when you rewrite the sentence.
+    This way you do not have to rewrap the surrounding text when you rewrite the sentence.
     This also makes changes actually easier to spot in the diff.
 
 ## Testing
 
-### What to test
+### What to Test
 - [ ] **Is newly added code adequately covered by tests?** Have you considered all the important corner cases?
-- If it's a bugfix:
+- If it is a bugfix:
     - [ ] **Is the (cleaned up) repro from the issue included as a test case?**
     - [ ] **Do tests cover not just the bug repro but also related cases that might be affected by a similar bug?**
 - [ ] **Positive cases (code that compiles) should have a semantic test.**
@@ -95,7 +96,7 @@ These are covered by the coding style but come up so often that it's worth singl
     If the test produces an error, we stop at the analysis stage and we will not detect
     problems that only occur in code generation, optimizer or assembler.
     - [ ] If you have to do it, at least mark positive cases inside the file with a short comment.
-        - This way, when the test is updated, it's easier to verify that these cases still do not trigger an error.
+        - This way, when the test is updated, it is easier to verify that these cases still do not trigger an error.
 - [ ] New syntax: **does it have an [`ASTJSON`](test/libsolidity/ASTJSON/) test?**
 - [ ] New CLI or StandardJSON option:
     - [ ] **Does it have a [command-line test](test/cmdlineTests/)?**
@@ -104,7 +105,7 @@ These are covered by the coding style but come up so often that it's worth singl
     - [ ] Are all types covered? Structs? Enums? Contracts/libraries/interfaces? User-defined value types?
         Value types: integers, fixed bytes, `address`, `address payable`, `bool`? Function pointers?
         Static and dynamic arrays? `string` and `bytes`? Mappings?
-        Values of types that can't be named: literals, tuples, array slices, storage references?
+        Values of types that cannot be named: literals, tuples, array slices, storage references?
     - [ ] If it accepts a function, does it also accept an event or an error? These have function types but are not functions.
     - [ ] If it affects free functions, what about internal library functions?
     - [ ] Bound library functions? Functions bound with `using for`?
@@ -114,14 +115,14 @@ These are covered by the coding style but come up so often that it's worth singl
     - [ ] What about importing it from a different module or inheriting it?
     - [ ] Have you tested it with the ternary operator?
 
-### Test style and good practices
-- [ ] **Make test case file names long and specific enough** that it's easy to guess what's inside.
+### Test Style and Good Practices
+- [ ] **Make test case file names long and specific enough** so that it is easy to guess what is inside.
     When checking if we have the case already covered the name is usually the only clue we see.
     - [ ] Place them in the right subdirectory.
     - [ ] **Avoid simply appending numbers to the name to distinguish similar cases.**
         Coming up with good names is hard but figuring out if any of hundreds of tests with names that
         match your search actually fits your case is even harder.
-- [ ] **Don't include version pragma and the SPDX comment in semantic and syntax test cases**.
+- [ ] **Do not include version pragma and the SPDX comment in semantic and syntax test cases**.
     In other test types include them if necessary to suppress warnings.
 - [ ] **If you have to use a version pragma, avoid hard-coding version.** Use `pragma solidity *`.
 - [ ] **Add `--pretty-print --pretty-json 4` to the `args` file of in command-line tests** to get
@@ -138,7 +139,7 @@ These are covered by the coding style but come up so often that it's worth singl
 - [ ] **Error messages should end with a full stop.**
 - [ ] **Prefer Ranges v3 to Boost where possible.**
 
-## Take a step back
+## Take a Step Back
 - [ ] **Do you fully understand what the PR does and why?**
 - [ ] **Are you confident that the code works and does not break unrelated functionality?**
 - [ ] **Is this a reasonable way to achieve the goal stated in the issue?**
@@ -147,8 +148,8 @@ These are covered by the coding style but come up so often that it's worth singl
 - [ ] **Is the code efficient?** Does the PR introduce any major performance bottlenecks?
 - [ ] **Does the PR introduce any breaking changes beyond what was agreed in the issue?**
 
-## Final checks before merging
-- [ ] **Is the PR rebased on top of the `develop` branch** (or `breaking` if it's a breaking change)?
+## Final Checks Before Merging
+- [ ] **Is the PR rebased on top of the `develop` branch** (or `breaking` if it is a breaking change)?
 - [ ] **Did all CI checks pass?**
     - Note that we have a few jobs that tend to randomly fail due to outside factors, especially external tests (with `_ext_` in the name).
         If these fail, rebase on latest `develop` (or `breaking`) and try rerunning them.
@@ -161,6 +162,6 @@ These are covered by the coding style but come up so often that it's worth singl
         In particular, review fixups should be squashed into the commits they fix.
     - [ ] Do not include any merge commits in your branch. Please use rebase to keep up to date with the base branch.
 - [ ] **Is the PR properly labeled?**
-    Use `external contribution` label to mark PRs not coming from the core team.
-    If the PR depends on other PRs, use `has dependencies` and set the base branch accordingly.
-    Labels like `documentation` or `optimizer` are also helpful for filtering PRs.
+    - Use `external contribution` label to mark PRs not coming from the core team.
+    - If the PR depends on other PRs, use `has dependencies` and set the base branch accordingly.
+    - Labels like `documentation` or `optimizer` are helpful for filtering PRs.
