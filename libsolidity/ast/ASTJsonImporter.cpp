@@ -22,6 +22,7 @@
  */
 
 #include <libsolidity/ast/ASTJsonImporter.h>
+#include <libsolidity/ast/OverridableOperators.h>
 
 #include <libyul/AsmJsonImporter.h>
 #include <libyul/AST.h>
@@ -386,6 +387,8 @@ ASTPointer<UsingForDirective> ASTJsonImporter::createUsingForDirective(Json::Val
 	vector<optional<Token>> operators;
 	if (_node.isMember("libraryName"))
 	{
+		solAssert(!_node["libraryName"].isArray());
+		solAssert(!_node["libraryName"]["operator"]);
 		functions.emplace_back(createIdentifierPath(_node["libraryName"]));
 		operators.emplace_back();
 	}
@@ -393,11 +396,14 @@ ASTPointer<UsingForDirective> ASTJsonImporter::createUsingForDirective(Json::Val
 		for (Json::Value const& function: _node["functionList"])
 		{
 			functions.emplace_back(createIdentifierPath(function["function"]));
-			operators.emplace_back(
-				function.isMember("operator") ?
-				optional<Token>{scanSingleToken(function["operator"])} :
-				nullopt
-			);
+			if (function.isMember("operator"))
+			{
+				Token const token = scanSingleToken(function["operator"]);
+				solAssert(util::contains(frontend::overridableOperators, token));
+				operators.emplace_back(optional<Token>{token});
+			}
+			else
+				operators.emplace_back(nullopt);
 		}
 
 	return createASTNode<UsingForDirective>(
