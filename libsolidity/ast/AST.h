@@ -698,12 +698,15 @@ public:
 
 private:
 	/// Either the single library or a list of functions.
-	std::vector<ASTPointer<IdentifierPath>> m_functionsOrLibrary;
+	std::vector<ASTPointer<IdentifierPath>> const m_functionsOrLibrary;
 	/// Operators, the functions from @a m_functionsOrLibrary implement.
-	std::vector<std::optional<Token>> m_operators;
-	bool m_usesBraces;
-	ASTPointer<TypeName> m_typeName;
-	bool m_global = false;
+	/// A token if the corresponding element in m_functionsOrLibrary
+	/// defines an operator, nullptr otherwise.
+	/// Note that this vector size must be equal to m_functionsOrLibrary size.
+	std::vector<std::optional<Token>> const m_operators;
+	bool const m_usesBraces;
+	ASTPointer<TypeName> const m_typeName;
+	bool const m_global;
 };
 
 class StructDefinition: public Declaration, public ScopeOpener
