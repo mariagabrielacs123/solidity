@@ -38,7 +38,6 @@
 #include <json/json.h>
 
 #include <range/v3/view/subrange.hpp>
-#include <range/v3/view/zip.hpp>
 #include <range/v3/view/map.hpp>
 
 #include <memory>

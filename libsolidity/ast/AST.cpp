@@ -30,6 +30,7 @@
 #include <libsolutil/Keccak256.h>
 
 #include <range/v3/view/tail.hpp>
+#include <range/v3/view/zip.hpp>
 
 #include <boost/algorithm/string.hpp>
 
